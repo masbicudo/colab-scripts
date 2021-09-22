@@ -13,7 +13,7 @@ if [ -n "$COLAB_GPU" ]; then
       rm /tmp/julia.tar.gz
   fi
 
-  for PACKAGE in "${@:2}"; do
+  for PACKAGE in IJulia "${@:2}"; do
     if [ "$PACKAGE" != "CUDA" ] || [ "$COLAB_GPU" = "1" ]; then
       julia -e '
       using Pkg;
