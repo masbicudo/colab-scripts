@@ -1,3 +1,9 @@
+# ref: https://colab.research.google.com/github/ageron/julia_notebooks/blob/master/Julia_Colab_Notebook_Template.ipynb
+# ref: https://colab.research.google.com/github/googlecolab/colabtools/blob/master/notebooks/colab-github-demo.ipynb
+
+# src: https://github.com/masbicudo/colab-scripts
+# src: https://colab.research.google.com/github/masbicudo/colab-scripts/blob/main/julia.ipynb
+
 # Check that we are running inside Google Colab
 if [ -n "$COLAB_GPU" ]; then
   FULL_VERSION="$(sed -r 's|.*([0-9]+\.[0-9]+\..*)|\1|' <<< $1)"
