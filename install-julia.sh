@@ -21,12 +21,11 @@ if [ -n "$COLAB_GPU" ]; then
 
   # Installing packages
   for PACKAGE in IJulia "${@:2}"; do
-    if [ "$PACKAGE" != "CUDA" ] || [ "$COLAB_GPU" = "1" ]; then
-      julia -e '
+    echo "Installing package $PACKAGE"
+    julia -e '
       using Pkg;
       pkg"add '$PACKAGE'; precompile;"
-      '
-    fi
+      ' 2>&1 3>&1 4>&1
   done
 
   # Defining number of threds to be used by Julia
@@ -37,17 +36,19 @@ if [ -n "$COLAB_GPU" ]; then
     )
   THREADS=$(( ${CPU_CORE_THREADS//$'\n'/+} ))
   julia -e '
-  using IJulia;
-  IJulia.installkernel(
-    "julia",
-    env=Dict("JULIA_NUM_THREADS"=>"'$THREADS'"))
-  '
+    using IJulia;
+    IJulia.installkernel(
+      "julia",
+      env=Dict("JULIA_NUM_THREADS"=>"'$THREADS'"))
+    '
 
   # Renaming Julia path to match the kernel name inside `julia.ipynb`
-  KERNEL_DIR=`julia -e '
-    using IJulia;
-    print(IJulia.kerneldir())
-    '`
+  KERNEL_DIR=`
+    julia -e '
+      using IJulia;
+      print(IJulia.kerneldir())
+      '
+      `
   KERNEL_NAME=`ls -d "$KERNEL_DIR"/julia*`
   mv -f $KERNEL_NAME "$KERNEL_DIR"/julia
 fi
