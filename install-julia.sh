@@ -25,7 +25,7 @@ if [ -n "$COLAB_GPU" ]; then
     julia -e '
       using Pkg;
       pkg"add '$PACKAGE'; precompile;"
-      ' 2>&1 3>&1 4>&1
+      ' >>out.txt 2>&1 3>&1 4>&1 #| sed -E '/Progress/!d'
   done
 
   # Defining number of threds to be used by Julia
