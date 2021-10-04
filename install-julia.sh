@@ -13,15 +13,17 @@ if [ -n "$COLAB_GPU" ]; then
   # Check if Julia is not installed, or if the installed version is not the required version
   if ! command -v julia 3>&1 > /dev/null || [ "$(sed -r 's|.*([0-9]+\.[0-9]+\..*)|\1|' <<< $(julia --version))" != "$FULL_VERSION" ]
   then
+      echo "Installing Julia v$MAJOR_MINOR_VERSION..."
       URI="$BASE_URI/$MAJOR_MINOR_VERSION/julia-$FULL_VERSION-linux-x86_64.tar.gz"
       wget -q $URI -O /tmp/julia.tar.gz
       tar -x -f /tmp/julia.tar.gz -C /usr/local --strip-components 1
       rm /tmp/julia.tar.gz
+      echo "  done"
   fi
 
   # Installing packages
   for PACKAGE in IJulia "${@:2}"; do
-    echo "Installing package $PACKAGE"
+    echo "Installing package '$PACKAGE'..."
     julia -e '
       using Pkg;
       pkg"add '$PACKAGE'; precompile;"
